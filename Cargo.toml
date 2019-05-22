@@ -1,0 +1,17 @@
+[package]
+name = "macaddr"
+version = "0.1.0"
+authors = ["svartalf <self@svartalf.info>"]
+edition = "2018"
+
+[features]
+default = ["std"]
+std = []
+# https://github.com/rust-lang/cargo/issues/3494
+serde_std = ["std", "serde/std"]
+
+[dependencies]
+serde = { version = "^1.0", default-features = false, features = ["derive"], optional = true }
+
+[package.metadata.docs.rs]
+features = ["serde"]
