@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["svartalf <self@svartalf.info>"]
 edition = "2018"
 description = "MAC address types"
+repository = "https://github.com/svartalf/rust-macaddr"
 keywords = ["mac", "macaddr", "mac-48", "eui-48", "eui-96"]
 categories = ["data-structures", "network-programming", "no-std"]
 readme = "README.md"
@@ -11,6 +12,7 @@ license = "Apache-2.0 OR MIT"
 
 [badges]
 maintenance = { status = "experimental" }
+travis-ci = { repository = "svartalf/rust-macaddr", branch = "master" }
 
 [features]
 default = ["std"]
