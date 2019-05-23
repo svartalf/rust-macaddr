@@ -26,5 +26,5 @@ after_success: |
   if [[ "$TRAVIS_RUST_VERSION" = nightly* &&
     "$TRAVIS_BRANCH" = master &&
     "$TRAVIS_PULL_REQUEST" = false ]]; then
-     cargo tarpaulin --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
+     cargo tarpaulin --run-types Tests Doctests --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
   fi
