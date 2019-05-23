@@ -29,7 +29,7 @@
 //! [MAC address]: https://en.wikipedia.org/wiki/MAC_address
 //! [this Cargo bug]: https://github.com/rust-lang/cargo/issues/3494
 #![cfg_attr(not(feature = "std"), no_std)]
-#![doc(html_root_url = "https://docs.rs/macaddr/0.1.0")]
+#![doc(html_root_url = "https://docs.rs/macaddr/0.1.1")]
 
 mod addr;
 mod addr6;
