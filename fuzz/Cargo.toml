@@ -1,0 +1,30 @@
+
+[package]
+name = "macaddr-fuzz"
+version = "0.0.1"
+authors = ["Automatically generated"]
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies.macaddr]
+path = ".."
+[dependencies.libfuzzer-sys]
+git = "https://github.com/rust-fuzz/libfuzzer-sys.git"
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "macaddr_from_str"
+path = "fuzz_targets/macaddr_from_str.rs"
+
+[[bin]]
+name = "macaddr6_from_str"
+path = "fuzz_targets/macaddr6_from_str.rs"
+
+[[bin]]
+name = "macaddr8_from_str"
+path = "fuzz_targets/macaddr8_from_str.rs"
