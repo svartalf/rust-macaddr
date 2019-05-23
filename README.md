@@ -1,4 +1,4 @@
-# rust-macaddr
+# macaddr
 
 [![Latest Version](https://img.shields.io/crates/v/macaddr.svg)](https://crates.io/crates/macaddr)
 [![Latest Version](https://docs.rs/macaddr/badge.svg)](https://docs.rs/macaddr)
@@ -15,3 +15,5 @@ enum, but for MAC addresses instead.
 It is intended to be as small and reusable as possible,
 so it can be used by other crates easily,
 providing the unified and neat interface.
+
+And it is `serde`- and `no_std`-friendly also!
