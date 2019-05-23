@@ -11,7 +11,7 @@ before_cache:
     - chmod -R a+r ${HOME}/.cargo
 
 install: |
-  if [[ "$TRAVIS_RUST_VERSION" == nightly ] && [ $TRAVIS_BRANCH = master ]]; then
+  if [[ "$TRAVIS_RUST_VERSION" == nightly* && "$TRAVIS_BRANCH" = master ]]; then
     RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
   fi
 
@@ -22,8 +22,9 @@ notifications:
     on_success: never
 
 
-after_success:
-  - '[ $TRAVIS_RUST_VERSION = nightly ] &&
-     [ $TRAVIS_BRANCH = master ] &&
-     [ $TRAVIS_PULL_REQUEST = false ] &&
-     cargo tarpaulin --ciserver travis-ci --coveralls $TRAVIS_JOB_ID || true'
+after_success: |
+  if [[ "$TRAVIS_RUST_VERSION" = nightly* &&
+    "$TRAVIS_BRANCH" = master &&
+    "$TRAVIS_PULL_REQUEST" = false ]]; then
+     cargo tarpaulin --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
+  fi
