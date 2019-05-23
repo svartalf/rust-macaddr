@@ -1,5 +1,13 @@
+#[cfg(feature = "std")]
+use ::std::str::FromStr;
+
+#[cfg(not(feature = "std"))]
+use core::str::FromStr;
+
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
+
+use crate::parser;
 
 /// MAC address in *EUI-48* format.
 #[repr(C)]
@@ -12,7 +20,7 @@ impl MacAddr6 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0x01, 0x23, 0x45, 0x67, 0x89, 0xAB);
     /// ```
@@ -25,7 +33,7 @@ impl MacAddr6 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
     ///
@@ -40,7 +48,7 @@ impl MacAddr6 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     ///
@@ -55,7 +63,7 @@ impl MacAddr6 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0x00, 0x01, 0x44, 0x55, 0x66, 0x77);
     ///
@@ -70,7 +78,7 @@ impl MacAddr6 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0x01, 0x00, 0x0C, 0xCC, 0xCC, 0xCC);
     ///
@@ -85,7 +93,7 @@ impl MacAddr6 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0x01, 0x00, 0x0C, 0xCC, 0xCC, 0xCC);
     ///
@@ -100,7 +108,7 @@ impl MacAddr6 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0x02, 0x00, 0x0C, 0xCC, 0xCC, 0xCC);
     ///
@@ -111,18 +119,40 @@ impl MacAddr6 {
         self.0[0] & 1 << 1 == 2
     }
 
-    /// Consumes `MacAddr6` address and returns raw bytes.
+    /// Converts a `MacAddr6` address to a byte slice.
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr6;
     /// let addr = MacAddr6::new(0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67);
     ///
-    /// assert_eq!(addr.into_bytes(), [0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67]);
+    /// assert_eq!(addr.as_bytes(), &[0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67]);
     /// ```
-    pub const fn into_bytes(self) -> [u8; 6] {
+    pub fn as_bytes(&self) -> &[u8] {
+        &self.0
+    }
+
+    /// Consumes `MacAddr6` address and returns raw bytes array.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use macaddr::MacAddr6;
+    /// let addr = MacAddr6::new(0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67);
+    ///
+    /// assert_eq!(addr.into_array(), [0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67]);
+    /// ```
+    pub const fn into_array(self) -> [u8; 6] {
         self.0
+    }
+}
+
+impl FromStr for MacAddr6 {
+    type Err = parser::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        parser::Parser::new(s).read_v6_addr()
     }
 }
 

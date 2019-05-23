@@ -1,5 +1,13 @@
+#[cfg(feature = "std")]
+use ::std::str::FromStr;
+
+#[cfg(not(feature = "std"))]
+use core::str::FromStr;
+
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
+
+use crate::parser;
 
 /// MAC address in *EUI-64* format.
 #[repr(C)]
@@ -12,7 +20,7 @@ impl MacAddr8 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr8;
     /// let addr = MacAddr8::new(0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF);
     /// ```
@@ -25,7 +33,7 @@ impl MacAddr8 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr8;
     /// let addr = MacAddr8::new(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
     ///
@@ -40,7 +48,7 @@ impl MacAddr8 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr8;
     /// let addr = MacAddr8::new(0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     ///
@@ -55,7 +63,7 @@ impl MacAddr8 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr8;
     /// let addr = MacAddr8::new(0x00, 0x01, 0x44, 0x55, 0x66, 0x77, 0xCD, 0xEF);
     ///
@@ -70,7 +78,7 @@ impl MacAddr8 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr8;
     /// let addr = MacAddr8::new(0x01, 0x00, 0x0C, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC);
     ///
@@ -85,7 +93,7 @@ impl MacAddr8 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr8;
     /// let addr = MacAddr8::new(0x01, 0x00, 0x0C, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC);
     ///
@@ -100,7 +108,7 @@ impl MacAddr8 {
     ///
     /// ## Example
     ///
-    /// ```edition2018
+    /// ```rust
     /// # use macaddr::MacAddr8;
     /// let addr = MacAddr8::new(0x02, 0x00, 0x0C, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC);
     ///
@@ -111,9 +119,40 @@ impl MacAddr8 {
         self.0[0] & 1 << 1 == 2
     }
 
-    /// Consumes `MacAddr8` address and returns raw bytes.
-    pub const fn into_bytes(self) -> [u8; 8] {
+    /// Converts a `MacAddr8` address to a byte slice.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use macaddr::MacAddr8;
+    /// let addr = MacAddr8::new(0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB);
+    ///
+    /// assert_eq!(addr.as_bytes(), &[0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB]);
+    /// ```
+    pub fn as_bytes(&self) -> &[u8] {
+        &self.0
+    }
+
+    /// Consumes a `MacAddr8` address and returns raw bytes.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use macaddr::MacAddr8;
+    /// let addr = MacAddr8::new(0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB);
+    ///
+    /// assert_eq!(addr.into_array(), [0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB]);
+    /// ```
+    pub const fn into_array(self) -> [u8; 8] {
         self.0
+    }
+}
+
+impl FromStr for MacAddr8 {
+    type Err = parser::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        parser::Parser::new(s).read_v8_addr()
     }
 }
 
