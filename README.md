@@ -6,14 +6,33 @@
 [![Coverage Status](https://coveralls.io/repos/github/svartalf/rust-macaddr/badge.svg?branch=master)](https://coveralls.io/github/svartalf/rust-macaddr?branch=master)
 ![Apache 2.0 OR MIT licensed](https://img.shields.io/badge/license-Apache2.0%2FMIT-blue.svg)
 
-This crate provides Rust types for a [MAC address](https://en.wikipedia.org/wiki/MAC_address)
+This crate provides types for a [MAC address](https://en.wikipedia.org/wiki/MAC_address)
 identifiers, both in IEEE *EUI-48* and *EUI-64* formats.
 
-You can think about it as the [`std::net::SocketAddr`](https://doc.rust-lang.org/std/net/enum.SocketAddr.html)
-enum, but for MAC addresses instead.
+It is like a [`std::net::SocketAddr`](https://doc.rust-lang.org/std/net/enum.SocketAddr.html) enum with a 
+[`std::net::SocketAddrV4`](https://doc.rust-lang.org/std/net/struct.SocketAddrV4.html) and
+[`std::net::SocketAddrV6`](https://doc.rust-lang.org/std/net/struct.SocketAddrV6.html) members,
+but for MAC addresses instead.
 
-It is intended to be as small and reusable as possible,
-so it can be used by other crates easily,
-providing the unified and neat interface.
+Obviously, MAC address can be represented as a `[u8; 6]` or `[u8; 8]`,
+but it is error-prone and inconvenient, so here they are —
+[MacAddr6](https://docs.rs/macaddr/latest/macaddr/struct.MacAddr6.html) and
+[MacAddr8](https://docs.rs/macaddr/latest/macaddr/struct.MacAddr8.html)
+structs with helpful methods and standard Rust traits implementations,
+intended to be the first-class Rust objects.
 
 And it is `serde`- and `no_std`-friendly also!
+
+## Installation
+
+Add this to your `Cargo.toml`
+
+```toml
+[dependencies]
+macaddr = "0.1"
+```
+
+## Usage
+
+Check out the [documentation](https://docs.rs/macaddr) for each type
+available, all of them have a plenty of examples.

@@ -1,12 +1,15 @@
 //! This crate provides types for a [MAC address] identifiers,
 //! both in IEEE *EUI-48* and *EUI-64* formats.
 //!
-//! You can think about it as the `std::net::SocketAddr` enum,
+//! It is like a `std::net::SocketAddr` enum
+//! with `std::net::SocketAddrV4` and `std::net::SocketAddrV6` members,
 //! but for MAC addresses instead.
 //!
-//! It is intended to be as small and reusable as possible,
-//! so it can be used by other crates easily,
-//! providing the unified and neat interface.
+//! Obviously, MAC address can be represented as a `[u8; 6]` or `[u8; 8]`,
+//! but it is error-prone and inconvenient, so here they are —
+//! [MacAddr6] and [MacAddr8] structs with helpful methods and
+//! standard Rust traits implementations to make them first-class
+//! Rust objects.
 //!
 //! ## Serde support
 //!
@@ -28,6 +31,8 @@
 //! [Serde]: https://serde.rs
 //! [MAC address]: https://en.wikipedia.org/wiki/MAC_address
 //! [this Cargo bug]: https://github.com/rust-lang/cargo/issues/3494
+//! [MacAddr6]: struct.MacAddr6.html
+//! [MacAddr8]: struct.MacAddr8.html
 #![cfg_attr(not(feature = "std"), no_std)]
 #![doc(html_root_url = "https://docs.rs/macaddr/0.1.1")]
 
