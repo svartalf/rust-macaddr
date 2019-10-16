@@ -1,6 +1,6 @@
 [package]
 name = "macaddr"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["svartalf <self@svartalf.info>"]
 edition = "2018"
 description = "MAC address types"
@@ -11,8 +11,7 @@ readme = "README.md"
 license = "Apache-2.0 OR MIT"
 
 [badges]
-maintenance = { status = "experimental" }
-travis-ci = { repository = "svartalf/rust-macaddr", branch = "master" }
+maintenance = { status = "passively-maintained" }
 
 [features]
 default = ["std"]

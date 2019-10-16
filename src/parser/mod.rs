@@ -102,9 +102,9 @@ impl<'a> Parser<'a> {
         let chr = self.read_char()?;
 
         match chr as u8 {
-            byte @ b'0'...b'9' => Ok(byte - b'0'),
-            byte @ b'a'...b'f' => Ok(byte - b'a' + 10),
-            byte @ b'A'...b'F' => Ok(byte - b'A' + 10),
+            byte @ b'0'..=b'9' => Ok(byte - b'0'),
+            byte @ b'a'..=b'f' => Ok(byte - b'a' + 10),
+            byte @ b'A'..=b'F' => Ok(byte - b'A' + 10),
             _ => Err(ParseError::InvalidCharacter(chr, self.pos)),
         }
     }
@@ -187,7 +187,7 @@ impl<'a> Parser<'a> {
         match self.read_v6_addr() {
             Ok(addr) => return Ok(addr.into()),
             Err(err @ ParseError::InvalidCharacter(..)) => return Err(err),
-            Err(ParseError::InvalidLength(..)) => {},
+            Err(ParseError::InvalidLength(..)) => {}
         }
 
         // Rolling back to the start.

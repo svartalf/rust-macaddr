@@ -2,14 +2,15 @@
 
 [![Latest Version](https://img.shields.io/crates/v/macaddr.svg)](https://crates.io/crates/macaddr)
 [![Latest Version](https://docs.rs/macaddr/badge.svg)](https://docs.rs/macaddr)
-[![Build Status](https://travis-ci.org/svartalf/rust-macaddr.svg?branch=master)](https://travis-ci.org/svartalf/rust-macaddr)
+[![Build Status](https://github.com/svartalf/rust-macaddr/workflows/Continuous%20integration/badge.svg)](https://github.com/svartalf/rust-macaddr/actions)
 [![Coverage Status](https://coveralls.io/repos/github/svartalf/rust-macaddr/badge.svg?branch=master)](https://coveralls.io/github/svartalf/rust-macaddr?branch=master)
+![Minimum rustc version](https://img.shields.io/badge/rustc-1.31+-green.svg)
 ![Apache 2.0 OR MIT licensed](https://img.shields.io/badge/license-Apache2.0%2FMIT-blue.svg)
 
 This crate provides types for a [MAC address](https://en.wikipedia.org/wiki/MAC_address)
 identifiers, both in IEEE *EUI-48* and *EUI-64* formats.
 
-It is like a [`std::net::SocketAddr`](https://doc.rust-lang.org/std/net/enum.SocketAddr.html) enum with a 
+It is like a [`std::net::SocketAddr`](https://doc.rust-lang.org/std/net/enum.SocketAddr.html) enum with a
 [`std::net::SocketAddrV4`](https://doc.rust-lang.org/std/net/struct.SocketAddrV4.html) and
 [`std::net::SocketAddrV6`](https://doc.rust-lang.org/std/net/struct.SocketAddrV6.html) members,
 but for MAC addresses instead.

@@ -26,7 +26,33 @@ impl MacAddr6 {
     /// ```
     #[allow(clippy::many_single_char_names)]
     pub const fn new(a: u8, b: u8, c: u8, d: u8, e: u8, f: u8) -> MacAddr6 {
-        Self([a, b, c, d, e, f])
+        MacAddr6([a, b, c, d, e, f])
+    }
+
+    /// Create a new nil `MacAddr6`.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use macaddr::MacAddr6;
+    /// let addr = MacAddr6::nil();
+    /// assert!(addr.is_nil());
+    /// ```
+    pub const fn nil() -> MacAddr6 {
+        MacAddr6([0x00; 6])
+    }
+
+    /// Create a new broadcast `MacAddr6`.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use macaddr::MacAddr6;
+    /// let addr = MacAddr6::broadcast();
+    /// assert!(addr.is_broadcast());
+    /// ```
+    pub const fn broadcast() -> MacAddr6 {
+        MacAddr6([0xFF; 6])
     }
 
     /// Returns `true` if the address is nil.
@@ -158,7 +184,7 @@ impl FromStr for MacAddr6 {
 
 impl From<[u8; 6]> for MacAddr6 {
     fn from(bytes: [u8; 6]) -> Self {
-        Self(bytes)
+        MacAddr6(bytes)
     }
 }
 
