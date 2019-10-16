@@ -184,7 +184,7 @@ mod std {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
             f.write_fmt(format_args!(
                     // Canonical form
-                    "{:X}-{:X}-{:X}-{:X}-{:X}-{:X}-{:X}-{:X}",
+                    "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
                     self.0[0],
                     self.0[1],
                     self.0[2],
