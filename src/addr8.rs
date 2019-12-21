@@ -199,17 +199,32 @@ impl AsMut<[u8]> for MacAddr8 {
 
 impl fmt::Display for MacAddr8 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_fmt(format_args!(
-                // Canonical form
-                "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
-                self.0[0],
-                self.0[1],
-                self.0[2],
-                self.0[3],
-                self.0[4],
-                self.0[5],
-                self.0[6],
-                self.0[7],
-            ))
+        for (i, n) in self.0.iter().enumerate() {
+            if i != 0 {
+                if f.sign_minus() {
+                    f.write_str("-")?;
+                } else if f.alternate() {
+                    f.write_str(":")?;
+                }
+            }
+
+            f.write_fmt(format_args!("{:02X}", n))?;
+        }
+
+        Ok(())
+    }
+}
+
+#[cfg(all(test, feature = "std"))]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn display() {
+        let addr = MacAddr8::new(0xab, 0x0d, 0xef, 0x12, 0x34, 0x56, 0x78, 0x9A);
+
+        assert_eq!(format!("{}", addr), "AB0DEF123456789A".to_string());
+        assert_eq!(format!("{:-}", addr), "AB-0D-EF-12-34-56-78-9A".to_string());
+        assert_eq!(format!("{:#}", addr), "AB:0D:EF:12:34:56:78:9A".to_string());
     }
 }
