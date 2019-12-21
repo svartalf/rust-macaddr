@@ -199,35 +199,27 @@ impl AsMut<[u8]> for MacAddr8 {
 
 impl fmt::Display for MacAddr8 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        macro_rules! write_fmt {
-            ($f:expr, $($e:expr,)+) => {
-                if f.sign_minus() {
-                    f.write_fmt(format_args!(
-                        "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
-                        $($e,)+
-                    ))
-                } else if f.alternate() {
-                    f.write_fmt(format_args!(
-                        "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
-                        $($e,)+
-                    ))
-                } else if f.precision().is_some() {
-                    f.write_fmt(format_args!(
-                        "{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}",
-                        $($e,)+
-                    ))
-                } else {
-                    f.write_fmt(format_args!(
-                        "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
-                        $($e,)+
-                    ))
-                }
-            }
+        if f.sign_minus() {
+            f.write_fmt(format_args!(
+                "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
+            ))
+        } else if f.alternate() {
+            f.write_fmt(format_args!(
+                "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
+            ))
+        } else if f.precision().is_some() {
+            f.write_fmt(format_args!(
+                "{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
+            ))
+        } else {
+            f.write_fmt(format_args!(
+                "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
+            ))
         }
-
-        write_fmt!(
-            f, self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
-        )
     }
 }
 
