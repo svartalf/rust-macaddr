@@ -197,6 +197,19 @@ impl AsMut<[u8]> for MacAddr8 {
     }
 }
 
+/// `MacAddr8` can be displayed in different formats.
+///
+/// # Example
+///
+/// ```
+/// # use macaddr::MacAddr8;
+/// let addr = MacAddr8::new(0xab, 0x0d, 0xef, 0x12, 0x34, 0x56, 0x78, 0x9A);
+///
+/// assert_eq!(&format!("{}",    addr), "AB0DEF123456789A");
+/// assert_eq!(&format!("{:-}",  addr), "AB-0D-EF-12-34-56-78-9A");
+/// assert_eq!(&format!("{:#}",  addr), "AB:0D:EF:12:34:56:78:9A");
+/// assert_eq!(&format!("{:.0}", addr), "AB0D.EF12.3456.789A");
+/// ```
 impl fmt::Display for MacAddr8 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if f.sign_minus() {
@@ -220,20 +233,5 @@ impl fmt::Display for MacAddr8 {
                 self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
             ))
         }
-    }
-}
-
-#[cfg(all(test, feature = "std"))]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn display() {
-        let addr = MacAddr8::new(0xab, 0x0d, 0xef, 0x12, 0x34, 0x56, 0x78, 0x9A);
-
-        assert_eq!(format!("{}", addr), "AB0DEF123456789A".to_string());
-        assert_eq!(format!("{:-}", addr), "AB-0D-EF-12-34-56-78-9A".to_string());
-        assert_eq!(format!("{:#}", addr), "AB:0D:EF:12:34:56:78:9A".to_string());
-        assert_eq!(format!("{:.0}", addr), "AB0D.EF12.3456.789A".to_string());
     }
 }
