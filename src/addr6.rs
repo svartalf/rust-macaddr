@@ -199,19 +199,30 @@ impl AsMut<[u8]> for MacAddr6 {
 
 impl fmt::Display for MacAddr6 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for (i, n) in self.0.iter().enumerate() {
-            if i != 0 {
+        macro_rules! write_fmt {
+            ($f:expr, $($e:expr,)+) => {
                 if f.sign_minus() {
-                    f.write_str("-")?;
+                    f.write_fmt(format_args!(
+                        "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
+                        $($e,)+
+                    ))
                 } else if f.alternate() {
-                    f.write_str(":")?;
+                    f.write_fmt(format_args!(
+                        "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
+                        $($e,)+
+                    ))
+                } else {
+                    f.write_fmt(format_args!(
+                        "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
+                        $($e,)+
+                    ))
                 }
             }
-
-            f.write_fmt(format_args!("{:02X}", n))?;
         }
 
-        Ok(())
+        write_fmt!(
+            f, self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
+        )
     }
 }
 
