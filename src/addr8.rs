@@ -211,6 +211,11 @@ impl fmt::Display for MacAddr8 {
                         "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
                         $($e,)+
                     ))
+                } else if f.precision().is_some() {
+                    f.write_fmt(format_args!(
+                        "{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}",
+                        $($e,)+
+                    ))
                 } else {
                     f.write_fmt(format_args!(
                         "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
@@ -237,5 +242,6 @@ mod tests {
         assert_eq!(format!("{}", addr), "AB0DEF123456789A".to_string());
         assert_eq!(format!("{:-}", addr), "AB-0D-EF-12-34-56-78-9A".to_string());
         assert_eq!(format!("{:#}", addr), "AB:0D:EF:12:34:56:78:9A".to_string());
+        assert_eq!(format!("{:.0}", addr), "AB0D.EF12.3456.789A".to_string());
     }
 }

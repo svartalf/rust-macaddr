@@ -199,30 +199,29 @@ impl AsMut<[u8]> for MacAddr6 {
 
 impl fmt::Display for MacAddr6 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        macro_rules! write_fmt {
-            ($f:expr, $($e:expr,)+) => {
-                if f.sign_minus() {
-                    f.write_fmt(format_args!(
-                        "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
-                        $($e,)+
-                    ))
-                } else if f.alternate() {
-                    f.write_fmt(format_args!(
-                        "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
-                        $($e,)+
-                    ))
-                } else {
-                    f.write_fmt(format_args!(
-                        "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
-                        $($e,)+
-                    ))
-                }
-            }
-        }
+        if f.sign_minus() {
+            f.write_fmt(format_args!(
+                "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
+            ))
+        } else if f.alternate() {
+            f.write_fmt(format_args!(
+                "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
+            ))
+        } else if f.precision().is_some() {
+            let p1 = u16::from(self.0[0]) * 16 + u16::from(self.0[1] / 16);
+            let p2 = u16::from(self.0[1] % 16) * 256 + u16::from(self.0[2]);
+            let p3 = u16::from(self.0[3]) * 16 + u16::from(self.0[4] / 16);
+            let p4 = u16::from(self.0[4] % 16) * 256 + u16::from(self.0[5]);
 
-        write_fmt!(
-            f, self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
-        )
+            f.write_fmt(format_args!("{:03X}.{:03X}.{:3X}.{:03X}", p1, p2, p3, p4,))
+        } else {
+            f.write_fmt(format_args!(
+                "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
+            ))
+        }
     }
 }
 
@@ -237,5 +236,6 @@ mod tests {
         assert_eq!(format!("{}", addr), "AB0DEF123456".to_string());
         assert_eq!(format!("{:-}", addr), "AB-0D-EF-12-34-56".to_string());
         assert_eq!(format!("{:#}", addr), "AB:0D:EF:12:34:56".to_string());
+        assert_eq!(format!("{:.0}", addr), "AB0.DEF.123.456".to_string());
     }
 }
