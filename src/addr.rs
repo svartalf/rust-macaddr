@@ -1,8 +1,8 @@
 #[cfg(feature = "std")]
-use ::std::str::FromStr;
+use std::{fmt, str::FromStr};
 
 #[cfg(not(feature = "std"))]
-use core::str::FromStr;
+use core::{fmt, str::FromStr};
 
 use crate::{parser, MacAddr6, MacAddr8, ParseError};
 
@@ -99,5 +99,14 @@ impl From<[u8; 6]> for MacAddr {
 impl From<[u8; 8]> for MacAddr {
     fn from(bytes: [u8; 8]) -> Self {
         MacAddr::V8(MacAddr8::from(bytes))
+    }
+}
+
+impl fmt::Display for MacAddr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            MacAddr::V6(v6) => fmt::Display::fmt(v6, f),
+            MacAddr::V8(v8) => fmt::Display::fmt(v8, f),
+        }
     }
 }

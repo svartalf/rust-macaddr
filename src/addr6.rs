@@ -1,18 +1,15 @@
 #[cfg(feature = "std")]
-use ::std::str::FromStr;
+use std::{fmt, str::FromStr};
 
 #[cfg(not(feature = "std"))]
-use core::str::FromStr;
-
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
+use core::{fmt, str::FromStr};
 
 use crate::parser;
 
 /// MAC address in *EUI-48* format.
 #[repr(C)]
 #[derive(Debug, Default, Hash, Eq, PartialEq, Ord, PartialOrd, Copy, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MacAddr6([u8; 6]);
 
 impl MacAddr6 {
@@ -200,24 +197,17 @@ impl AsMut<[u8]> for MacAddr6 {
     }
 }
 
-#[cfg(feature = "std")]
-mod std {
-    use std::fmt;
-
-    use super::MacAddr6;
-
-    impl fmt::Display for MacAddr6 {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            f.write_fmt(format_args!(
-                    // Canonical form
-                    "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
-                    self.0[0],
-                    self.0[1],
-                    self.0[2],
-                    self.0[3],
-                    self.0[4],
-                    self.0[5],
-                ))
-        }
+impl fmt::Display for MacAddr6 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_fmt(format_args!(
+                // Canonical form
+                "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
+                self.0[0],
+                self.0[1],
+                self.0[2],
+                self.0[3],
+                self.0[4],
+                self.0[5],
+            ))
     }
 }

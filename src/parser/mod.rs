@@ -1,7 +1,8 @@
 #[cfg(feature = "std")]
-use std::error::Error;
-#[cfg(feature = "std")]
-use std::fmt;
+use std::{error::Error, fmt};
+
+#[cfg(not(feature = "std"))]
+use core::fmt;
 
 use crate::{MacAddr, MacAddr6, MacAddr8};
 
@@ -31,7 +32,6 @@ pub enum ParseError {
     InvalidCharacter(char, usize),
 }
 
-#[cfg(feature = "std")]
 impl fmt::Display for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {

@@ -1,4 +1,8 @@
+#[cfg(feature = "std")]
 use std::str::FromStr;
+
+#[cfg(not(feature = "std"))]
+use core::str::FromStr;
 
 use assert_matches::assert_matches;
 
