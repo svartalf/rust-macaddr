@@ -205,10 +205,9 @@ impl AsMut<[u8]> for MacAddr6 {
 /// # use macaddr::MacAddr6;
 /// let addr = MacAddr6::new(0xab, 0x0d, 0xef, 0x12, 0x34, 0x56);
 ///
-/// assert_eq!(&format!("{}",    addr), "AB0DEF123456");
+/// assert_eq!(&format!("{}",    addr), "AB:0D:EF:12:34:56");
 /// assert_eq!(&format!("{:-}",  addr), "AB-0D-EF-12-34-56");
-/// assert_eq!(&format!("{:#}",  addr), "AB:0D:EF:12:34:56");
-/// assert_eq!(&format!("{:.0}", addr), "AB0.DEF.123.456");
+/// assert_eq!(&format!("{:#}",  addr), "AB0.DEF.123.456");
 /// ```
 impl fmt::Display for MacAddr6 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -218,11 +217,6 @@ impl fmt::Display for MacAddr6 {
                 self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
             ))
         } else if f.alternate() {
-            f.write_fmt(format_args!(
-                "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
-                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
-            ))
-        } else if f.precision().is_some() {
             let p1 = u16::from(self.0[0]) * 16 + u16::from(self.0[1] / 16);
             let p2 = u16::from(self.0[1] % 16) * 256 + u16::from(self.0[2]);
             let p3 = u16::from(self.0[3]) * 16 + u16::from(self.0[4] / 16);
@@ -231,7 +225,7 @@ impl fmt::Display for MacAddr6 {
             f.write_fmt(format_args!("{:03X}.{:03X}.{:3X}.{:03X}", p1, p2, p3, p4,))
         } else {
             f.write_fmt(format_args!(
-                "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
+                "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
                 self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
             ))
         }

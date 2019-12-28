@@ -205,10 +205,9 @@ impl AsMut<[u8]> for MacAddr8 {
 /// # use macaddr::MacAddr8;
 /// let addr = MacAddr8::new(0xab, 0x0d, 0xef, 0x12, 0x34, 0x56, 0x78, 0x9A);
 ///
-/// assert_eq!(&format!("{}",    addr), "AB0DEF123456789A");
+/// assert_eq!(&format!("{}",    addr), "AB:0D:EF:12:34:56:78:9A");
 /// assert_eq!(&format!("{:-}",  addr), "AB-0D-EF-12-34-56-78-9A");
-/// assert_eq!(&format!("{:#}",  addr), "AB:0D:EF:12:34:56:78:9A");
-/// assert_eq!(&format!("{:.0}", addr), "AB0D.EF12.3456.789A");
+/// assert_eq!(&format!("{:#}",  addr), "AB0D.EF12.3456.789A");
 /// ```
 impl fmt::Display for MacAddr8 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -219,17 +218,12 @@ impl fmt::Display for MacAddr8 {
             ))
         } else if f.alternate() {
             f.write_fmt(format_args!(
-                "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
-                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
-            ))
-        } else if f.precision().is_some() {
-            f.write_fmt(format_args!(
                 "{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}.{:02X}{:02X}",
                 self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
             ))
         } else {
             f.write_fmt(format_args!(
-                "{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
+                "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
                 self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5], self.0[6], self.0[7],
             ))
         }
