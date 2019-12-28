@@ -222,7 +222,7 @@ impl fmt::Display for MacAddr6 {
             let p3 = u16::from(self.0[3]) * 16 + u16::from(self.0[4] / 16);
             let p4 = u16::from(self.0[4] % 16) * 256 + u16::from(self.0[5]);
 
-            f.write_fmt(format_args!("{:03X}.{:03X}.{:3X}.{:03X}", p1, p2, p3, p4,))
+            f.write_fmt(format_args!("{:03X}.{:03X}.{:03X}.{:03X}", p1, p2, p3, p4,))
         } else {
             f.write_fmt(format_args!(
                 "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
