@@ -1,18 +1,15 @@
 #[cfg(feature = "std")]
-use ::std::str::FromStr;
+use std::{fmt, str::FromStr};
 
 #[cfg(not(feature = "std"))]
-use core::str::FromStr;
-
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
+use core::{fmt, str::FromStr};
 
 use crate::parser;
 
 /// MAC address in *EUI-48* format.
 #[repr(C)]
 #[derive(Debug, Default, Hash, Eq, PartialEq, Ord, PartialOrd, Copy, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MacAddr6([u8; 6]);
 
 impl MacAddr6 {
@@ -200,24 +197,37 @@ impl AsMut<[u8]> for MacAddr6 {
     }
 }
 
-#[cfg(feature = "std")]
-mod std {
-    use std::fmt;
-
-    use super::MacAddr6;
-
-    impl fmt::Display for MacAddr6 {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+/// `MacAddr6` can be displayed in different formats.
+///
+/// # Example
+///
+/// ```
+/// # use macaddr::MacAddr6;
+/// let addr = MacAddr6::new(0xab, 0x0d, 0xef, 0x12, 0x34, 0x56);
+///
+/// assert_eq!(&format!("{}",    addr), "AB:0D:EF:12:34:56");
+/// assert_eq!(&format!("{:-}",  addr), "AB-0D-EF-12-34-56");
+/// assert_eq!(&format!("{:#}",  addr), "AB0.DEF.123.456");
+/// ```
+impl fmt::Display for MacAddr6 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if f.sign_minus() {
             f.write_fmt(format_args!(
-                    // Canonical form
-                    "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
-                    self.0[0],
-                    self.0[1],
-                    self.0[2],
-                    self.0[3],
-                    self.0[4],
-                    self.0[5],
-                ))
+                "{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
+            ))
+        } else if f.alternate() {
+            let p1 = u16::from(self.0[0]) * 16 + u16::from(self.0[1] / 16);
+            let p2 = u16::from(self.0[1] % 16) * 256 + u16::from(self.0[2]);
+            let p3 = u16::from(self.0[3]) * 16 + u16::from(self.0[4] / 16);
+            let p4 = u16::from(self.0[4] % 16) * 256 + u16::from(self.0[5]);
+
+            f.write_fmt(format_args!("{:03X}.{:03X}.{:03X}.{:03X}", p1, p2, p3, p4,))
+        } else {
+            f.write_fmt(format_args!(
+                "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
+                self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
+            ))
         }
     }
 }
