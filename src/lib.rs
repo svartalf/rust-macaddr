@@ -34,7 +34,7 @@
 //! [MacAddr6]: struct.MacAddr6.html
 //! [MacAddr8]: struct.MacAddr8.html
 #![cfg_attr(not(feature = "std"), no_std)]
-#![doc(html_root_url = "https://docs.rs/macaddr/0.1.1")]
+#![doc(html_root_url = "https://docs.rs/macaddr/1.0.0")]
 
 mod addr;
 mod addr6;

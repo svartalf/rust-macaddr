@@ -1,7 +1,3 @@
-#[cfg(feature = "std")]
-use std::{fmt, str::FromStr};
-
-#[cfg(not(feature = "std"))]
 use core::{fmt, str::FromStr};
 
 use crate::parser;

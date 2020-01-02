@@ -30,7 +30,7 @@ Add this to your `Cargo.toml`
 
 ```toml
 [dependencies]
-macaddr = "0.1"
+macaddr = "1.0"
 ```
 
 ## Usage
