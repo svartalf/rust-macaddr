@@ -9,6 +9,7 @@ keywords = ["mac", "macaddr", "mac-48", "eui-48", "eui-96"]
 categories = ["data-structures", "network-programming", "no-std"]
 readme = "README.md"
 license = "Apache-2.0 OR MIT"
+exclude = ["/.github", "/fuzz", "/benches"]
 
 [badges]
 maintenance = { status = "passively-maintained" }
