@@ -1,6 +1,6 @@
 [package]
 name = "macaddr"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["svartalf <self@svartalf.info>"]
 edition = "2018"
 description = "MAC address types"
