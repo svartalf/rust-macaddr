@@ -65,10 +65,9 @@ jobs:
           toolchain: stable
           override: true
       - name: Install cargo-nono
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/install@master
         with:
-          command: install
-          args: cargo-nono
+          crate: cargo-nono
       - name: Check no_std with default features
         uses: actions-rs/cargo@v1
         with:
@@ -100,6 +99,10 @@ jobs:
           CARGO_INCREMENTAL: 0
           RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads"
 
+      - name: Install grcov
+        uses: actions-rs/install@master
+        with:
+          crate: grcov
       - name: Gather coverage data
         id: coverage
         uses: actions-rs/grcov@v0.1
