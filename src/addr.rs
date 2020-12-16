@@ -5,6 +5,7 @@ use crate::{parser, MacAddr6, MacAddr8, ParseError};
 /// A MAC address, either in *EUI-48* or *EUI-64* format.
 #[derive(Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Copy, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(untagged))]
 pub enum MacAddr {
     V6(MacAddr6),
     V8(MacAddr8),
