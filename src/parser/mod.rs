@@ -9,7 +9,7 @@ use crate::{MacAddr, MacAddr6, MacAddr8};
 /// An error which can be returned when parsing MAC address.
 ///
 /// This error is used as the error type for the `FromStr` implementation
-/// for [MacAddr6] and [MacAddr8].
+/// for [`MacAddr6`] and [`MacAddr8`].
 ///
 /// [MacAddr6]: ./struct.MacAddr6.html
 /// [MacAddr8]: ./struct.MacAddr8.html
@@ -62,7 +62,7 @@ pub struct Parser<'a> {
 }
 
 impl<'a> Parser<'a> {
-    pub fn new(s: &'a str) -> Parser<'a> {
+    pub const fn new(s: &'a str) -> Parser<'a> {
         Parser {
             source: s.as_bytes(),
             pos: 0,
@@ -70,7 +70,7 @@ impl<'a> Parser<'a> {
         }
     }
 
-    fn is_eof(&self) -> bool {
+    const fn is_eof(&self) -> bool {
         self.pos == self.source.len()
     }
 

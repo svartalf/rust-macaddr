@@ -21,7 +21,7 @@ impl MacAddr {
     /// assert_eq!(addr.is_v6(), true);
     /// assert_eq!(addr.is_v8(), false);
     /// ```
-    pub fn is_v6(&self) -> bool {
+    pub const fn is_v6(&self) -> bool {
         match self {
             MacAddr::V6(_) => true,
             MacAddr::V8(_) => false,
@@ -39,7 +39,7 @@ impl MacAddr {
     /// assert_eq!(addr.is_v6(), false);
     /// assert_eq!(addr.is_v8(), true);
     /// ```
-    pub fn is_v8(&self) -> bool {
+    pub const fn is_v8(&self) -> bool {
         match self {
             MacAddr::V6(_) => false,
             MacAddr::V8(_) => true,
@@ -58,7 +58,7 @@ impl MacAddr {
     ///
     /// assert_eq!(addr.as_bytes(), &[0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67]);
     /// ```
-    pub fn as_bytes(&self) -> &[u8] {
+    pub const fn as_bytes(&self) -> &[u8] {
         match self {
             MacAddr::V6(addr) => addr.as_bytes(),
             MacAddr::V8(addr) => addr.as_bytes(),
