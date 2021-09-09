@@ -148,7 +148,7 @@ impl MacAddr8 {
     ///
     /// assert_eq!(addr.as_bytes(), &[0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB]);
     /// ```
-    pub fn as_bytes(&self) -> &[u8] {
+    pub const fn as_bytes(&self) -> &[u8] {
         &self.0
     }
 

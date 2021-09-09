@@ -62,7 +62,7 @@ pub struct Parser<'a> {
 }
 
 impl<'a> Parser<'a> {
-    pub fn new(s: &'a str) -> Parser<'a> {
+    pub const fn new(s: &'a str) -> Parser<'a> {
         Parser {
             source: s.as_bytes(),
             pos: 0,
@@ -70,7 +70,7 @@ impl<'a> Parser<'a> {
         }
     }
 
-    fn is_eof(&self) -> bool {
+    const fn is_eof(&self) -> bool {
         self.pos == self.source.len()
     }
 
