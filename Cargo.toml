@@ -24,7 +24,7 @@ serde_std = ["std", "serde/std"]
 serde = { version = "^1.0", default-features = false, features = ["derive"], optional = true }
 
 [dev-dependencies]
-assert_matches = "1.3.0"
+assert_matches = "1.5.0"
 
 [package.metadata.docs.rs]
 features = ["serde", "serde_std"]
