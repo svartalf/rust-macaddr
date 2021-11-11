@@ -22,6 +22,18 @@ impl MacAddr6 {
         MacAddr6([a, b, c, d, e, f])
     }
 
+    /// Creates a new `MacAddr6` address from an array of bytes.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use macaddr::MacAddr6;
+    /// let addr = MacAddr6::new_from_array([0x01, 0x23, 0x45, 0x67, 0x89, 0xAB]);
+    /// ```
+    pub const fn new_from_array(arr: [u8; 6]) -> MacAddr6 {
+        MacAddr6(arr)
+    }
+
     /// Create a new nil `MacAddr6`.
     ///
     /// ## Example
