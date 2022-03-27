@@ -162,7 +162,26 @@ impl MacAddr8 {
     ///
     /// assert_eq!(addr.into_array(), [0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB]);
     /// ```
+    #[deprecated(
+        since = "1.1.0",
+        note = "Renamed to `octets` to mirror the standard library's `IpAddr` types."
+    )]
     pub const fn into_array(self) -> [u8; 8] {
+        self.0
+    }
+
+    /// Returns the eight eight-bit integers the MAC address consists of.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use macaddr::MacAddr8;
+    /// let addr = MacAddr8::new(0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB);
+    ///
+    /// assert_eq!(addr.octets(), [0xAC, 0xDE, 0x48, 0x23, 0x45, 0x67, 0x89, 0xAB]);
+    /// ```
+    #[allow(clippy::trivially_copy_pass_by_ref)]
+    pub const fn octets(&self) -> [u8; 8] {
         self.0
     }
 }
