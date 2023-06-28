@@ -120,31 +120,33 @@ fn test_parse_empty() {
 }
 
 #[test]
-fn test_parse_v6_partial_start() {
-    let addr = MacAddr6::from_str("b-cd-ef-12-34-56");
-
-    assert!(addr.is_err());
+fn test_parse_v6_partial() {
+    assert!(MacAddr6::from_str("cd-ef-12-34-56").is_err());
+    assert!(MacAddr6::from_str("ab-cd-ef-12-34-").is_err());
 }
 
 #[test]
-fn test_parse_v8_partial_start() {
-    let addr = MacAddr8::from_str("b-cd-ef-12-34-56-78-9A");
-
-    assert!(addr.is_err());
+fn test_parse_v8_partial() {
+    assert!(MacAddr8::from_str("cd-ef-12-34-56-78-9A").is_err());
+    assert!(MacAddr8::from_str("ab-cd-ef-12-34-56-78-").is_err());
 }
 
 #[test]
-fn test_parse_v6_partial_end() {
-    let addr = MacAddr6::from_str("ab-cd-ef-12-34-5");
-
-    assert!(addr.is_err());
+fn test_parse_v6_missing_leading_zeros() {
+    let addr = MacAddr::from_str("1:34:6:7:9A:B");
+    assert!(addr.is_ok());
+    let addr = addr.unwrap();
+    assert_matches!(addr, MacAddr::V6(..));
+    assert_eq!(&[0x1, 0x34, 0x6, 0x7, 0x9A, 0xB], addr.as_bytes());
 }
 
 #[test]
-fn test_parse_v8_partial_end() {
-    let addr = MacAddr8::from_str("ab-cd-ef-12-34-56-78-9");
-
-    assert!(addr.is_err());
+fn test_parse_v8_missing_leading_zeros() {
+    let addr = MacAddr::from_str("1:34:56:7:9A:BC:D:F");
+    assert!(addr.is_ok());
+    let addr = addr.unwrap();
+    assert_matches!(addr, MacAddr::V8(..));
+    assert_eq!(&[0x1, 0x34, 0x56, 0x7, 0x9A, 0xBC, 0xD, 0xF], addr.as_bytes());
 }
 
 #[test]

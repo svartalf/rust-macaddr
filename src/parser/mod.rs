@@ -135,6 +135,14 @@ impl<'a> Parser<'a> {
         }
     }
 
+    fn read_octet(&mut self) -> Result<u8, ParseError> {
+        let mut digit = self.read_digit()?;
+        if self.probe_delimiter()?.is_none() && !self.is_eof() {
+            digit = (digit << 4) | self.read_digit()?;
+        }
+        Ok(digit)
+    }
+
     pub fn read_v6_addr(&mut self) -> Result<MacAddr6, ParseError> {
         let mut bytes = [0; 6];
         let mut i = 0;
@@ -144,10 +152,7 @@ impl<'a> Parser<'a> {
                 self.move_next();
             }
 
-            let mut digit = self.read_digit()? * 16;
-            digit += self.read_digit()?;
-
-            bytes[i] = digit;
+            bytes[i] = self.read_octet()?;
 
             i += 1;
         }
@@ -168,10 +173,7 @@ impl<'a> Parser<'a> {
                 self.move_next();
             }
 
-            let mut digit = self.read_digit()? * 16;
-            digit += self.read_digit()?;
-
-            bytes[i] = digit;
+            bytes[i] = self.read_octet()?;
 
             i += 1;
         }
